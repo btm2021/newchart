@@ -1,0 +1,171 @@
+/* Tool Button in Header */
+.tv-tool-button {
+    position: relative !important;
+    padding: 0 !important;
+    margin: 0 4px !important;
+}
+
+.tv-tool-button-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px;
+    color: #787B86;
+    transition: color 0.2s;
+}
+
+.tv-tool-button:hover .tv-tool-button-content {
+    color: #D1D4DC;
+}
+
+/* Tool Sidebar */
+.tool-sidebar {
+    position: fixed;
+    top: 0;
+    right: -360px;
+    width: 360px;
+    height: 100vh;
+    background: #1E222D;
+    z-index: 10001;
+    transition: right 0.3s ease;
+    overflow-y: auto;
+    box-shadow: -2px 0 8px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+}
+
+.tool-sidebar.active {
+    right: 0;
+}
+
+/* Tool Sidebar Header */
+.tool-sidebar-header {
+    padding: 20px;
+    background: #131722;
+    border-bottom: 1px solid #2A2E39;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+}
+
+.tool-sidebar-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #D1D4DC;
+    margin: 0;
+}
+
+.tool-sidebar-close {
+    background: none;
+    border: none;
+    color: #787B86;
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: background 0.2s, color 0.2s;
+}
+
+.tool-sidebar-close:hover {
+    background: #2A2E39;
+    color: #D1D4DC;
+}
+
+/* Tool Sidebar Content */
+.tool-sidebar-content {
+    padding: 12px;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.tool-sidebar-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.tool-sidebar-content::-webkit-scrollbar-track {
+    background: #1E222D;
+}
+
+.tool-sidebar-content::-webkit-scrollbar-thumb {
+    background: #2A2E39;
+    border-radius: 3px;
+}
+
+.tool-sidebar-content::-webkit-scrollbar-thumb:hover {
+    background: #363A45;
+}
+
+/* Tool Item */
+.tool-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    background: #131722;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+}
+
+.tool-item:hover {
+    background: #2A2E39;
+    transform: translateX(4px);
+}
+
+.tool-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #2A2E39;
+    border-radius: 8px;
+    color: #2962FF;
+    flex-shrink: 0;
+}
+
+.tool-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.tool-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #D1D4DC;
+    margin-bottom: 4px;
+}
+
+.tool-description {
+    font-size: 12px;
+    color: #787B86;
+    line-height: 1.4;
+}
+
+.tool-arrow {
+    color: #787B86;
+    flex-shrink: 0;
+}
+
+/* Tool Sidebar Overlay */
+.tool-sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 10000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+}
+
+.tool-sidebar-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}

@@ -1,0 +1,357 @@
+/* Calendar Profit Styles */
+
+.calendar-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    gap: 16px;
+}
+
+/* Header */
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    background: #131722;
+    border-radius: 4px;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.calendar-nav {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.calendar-nav .tv-button {
+    padding: 8px 16px;
+    min-width: 40px;
+}
+
+.calendar-month-year {
+    font-size: 18px;
+    font-weight: 600;
+    color: #D1D4DC;
+    min-width: 180px;
+    text-align: center;
+}
+
+.calendar-stats {
+    display: flex;
+    gap: 24px;
+}
+
+/* Main Content */
+.calendar-main {
+    display: grid;
+    grid-template-columns: 1fr 350px;
+    gap: 16px;
+    flex: 1;
+    overflow: hidden;
+}
+
+/* Calendar View */
+.calendar-view {
+    background: #131722;
+    border-radius: 4px;
+    padding: 16px;
+    overflow: auto;
+}
+
+.calendar-weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    margin-bottom: 8px;
+}
+
+.calendar-weekday {
+    text-align: center;
+    font-size: 12px;
+    font-weight: 600;
+    color: #787B86;
+    padding: 8px;
+    text-transform: uppercase;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+}
+
+.calendar-day {
+    aspect-ratio: 1;
+    background: #1E222D;
+    border-radius: 4px;
+    padding: 8px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    min-height: 80px;
+}
+
+.calendar-day:hover {
+    background: #2A2E39;
+    transform: scale(1.02);
+}
+
+.calendar-day.empty {
+    background: transparent;
+    cursor: default;
+}
+
+.calendar-day.empty:hover {
+    transform: none;
+}
+
+.calendar-day.today {
+    border: 2px solid #2962FF;
+}
+
+.calendar-day.selected {
+    background: #2A2E39;
+    box-shadow: 0 0 0 2px #2962FF;
+}
+
+.calendar-day.has-trades {
+    background: #1E2732;
+}
+
+.calendar-day-number {
+    font-size: 14px;
+    font-weight: 600;
+    color: #D1D4DC;
+    margin-bottom: 4px;
+}
+
+.calendar-day-pnl {
+    font-size: 13px;
+    font-weight: 600;
+    margin-top: auto;
+}
+
+.calendar-day-trades {
+    font-size: 10px;
+    color: #787B86;
+    margin-top: 2px;
+}
+
+/* Trade Form */
+.trade-form {
+    background: #131722;
+    border-radius: 4px;
+    padding: 16px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.trade-form-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #D1D4DC;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #2A2E39;
+}
+
+.trade-form-content {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.trade-form textarea.tv-form-input {
+    resize: vertical;
+    font-family: inherit;
+}
+
+/* Trades Popup */
+.trades-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #1E222D;
+    border-radius: 8px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    z-index: 10002;
+    min-width: 400px;
+    max-width: 600px;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.trades-popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    background: #131722;
+    border-bottom: 1px solid #2A2E39;
+    border-radius: 8px 8px 0 0;
+}
+
+.trades-popup-header h4 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: #D1D4DC;
+}
+
+.trades-popup-close {
+    background: none;
+    border: none;
+    color: #787B86;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: background 0.2s, color 0.2s;
+}
+
+.trades-popup-close:hover {
+    background: #2A2E39;
+    color: #D1D4DC;
+}
+
+.trades-popup-content {
+    padding: 16px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.trade-item {
+    background: #131722;
+    border-radius: 4px;
+    padding: 12px;
+    margin-bottom: 12px;
+    border-left: 3px solid #2A2E39;
+}
+
+.trade-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.trade-symbol {
+    font-size: 14px;
+    font-weight: 600;
+    color: #D1D4DC;
+}
+
+.trade-pnl {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.trade-item-details {
+    font-size: 12px;
+    color: #787B86;
+    margin-bottom: 8px;
+}
+
+.trade-item-notes {
+    font-size: 12px;
+    color: #D1D4DC;
+    background: #1E222D;
+    padding: 8px;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    font-style: italic;
+}
+
+.trade-delete {
+    background: #F23645;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.trade-delete:hover {
+    background: #D32F2F;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+    .calendar-main {
+        grid-template-columns: 1fr;
+    }
+    
+    .trade-form {
+        max-height: 400px;
+    }
+}
+
+@media (max-width: 768px) {
+    .calendar-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .calendar-stats {
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+    
+    .calendar-day {
+        min-height: 60px;
+        padding: 4px;
+    }
+    
+    .calendar-day-number {
+        font-size: 12px;
+    }
+    
+    .calendar-day-pnl {
+        font-size: 11px;
+    }
+    
+    .trades-popup {
+        min-width: 90vw;
+    }
+}
+
+/* Scrollbar */
+.calendar-view::-webkit-scrollbar,
+.trade-form::-webkit-scrollbar,
+.trades-popup-content::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+.calendar-view::-webkit-scrollbar-track,
+.trade-form::-webkit-scrollbar-track,
+.trades-popup-content::-webkit-scrollbar-track {
+    background: #131722;
+}
+
+.calendar-view::-webkit-scrollbar-thumb,
+.trade-form::-webkit-scrollbar-thumb,
+.trades-popup-content::-webkit-scrollbar-thumb {
+    background: #2A2E39;
+    border-radius: 3px;
+}
+
+.calendar-view::-webkit-scrollbar-thumb:hover,
+.trade-form::-webkit-scrollbar-thumb:hover,
+.trades-popup-content::-webkit-scrollbar-thumb:hover {
+    background: #363A45;
+}
