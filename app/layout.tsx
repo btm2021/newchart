@@ -10,6 +10,10 @@ export const metadata: Metadata = {
     statusBarStyle: "black-translucent",
     title: "NexaCharts",
   },
+  other: {
+    "mobile-web-app-capable": "yes",
+    "apple-mobile-web-app-capable": "yes",
+  },
   formatDetection: {
     telephone: false,
   },

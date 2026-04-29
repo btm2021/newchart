@@ -4,6 +4,7 @@ export interface UserWorkspaceState {
   activeInterval: string;
   chartType: "candles" | "line" | "bars";
   theme: "dark";
+  keepScreenAwake: boolean;
 }
 
 const STORAGE_KEY = "nexa-workspace-v1";
@@ -14,6 +15,7 @@ export const defaultWorkspaceState: UserWorkspaceState = {
   activeInterval: "15",
   chartType: "candles",
   theme: "dark",
+  keepScreenAwake: true,
 };
 
 export function loadWorkspaceState(): UserWorkspaceState {

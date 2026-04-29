@@ -5,6 +5,10 @@
   --muted: #868d9a;
   --line: #2a3241;
   --accent: #2962ff;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
 }
 
 * {
@@ -22,8 +26,18 @@ body {
   overscroll-behavior: none;
 }
 
+html {
+  height: 100%;
+  background: var(--app-bg);
+}
+
 body {
   min-height: 100dvh;
+  min-width: 320px;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  overflow: hidden;
 }
 
 button,
@@ -39,14 +53,21 @@ a {
 
 .chart-page {
   position: relative;
-  width: 100vw;
+  width: 100%;
+  min-width: 320px;
   height: 100dvh;
+  min-height: 100dvh;
   background: #131722;
+  overflow: hidden;
 }
 
 .chart-frame {
   position: absolute;
-  inset: 0;
+  inset:
+    max(0px, var(--safe-top))
+    max(0px, var(--safe-right))
+    max(0px, var(--safe-bottom))
+    max(0px, var(--safe-left));
 }
 
 .replay-frame {
@@ -163,7 +184,11 @@ text-shadow: 0 0 0.5px rgba(255, 255, 255, 0.8);
 .chart-loading,
 .chart-error {
   position: absolute;
-  inset: 0;
+  inset:
+    max(0px, var(--safe-top))
+    max(0px, var(--safe-right))
+    max(0px, var(--safe-bottom))
+    max(0px, var(--safe-left));
   z-index: 4;
   display: flex;
   align-items: center;
@@ -203,7 +228,7 @@ code {
 .replay-controls {
   position: fixed;
   left: 50%;
-  bottom: 14px;
+  bottom: calc(max(0px, var(--safe-bottom)) + 14px);
   z-index: 12;
   transform: translateX(-50%);
   display: none;
@@ -257,6 +282,20 @@ code {
   height: 24px;
   padding: 0;
   font-size: 13px;
+}
+
+@supports (height: 100svh) {
+  body,
+  .chart-page {
+    min-height: 100svh;
+    height: 100svh;
+  }
+}
+
+@media (min-width: 768px) {
+  .replay-panel {
+    max-width: min(50vw, 360px);
+  }
 }
 
 .replay-panel__status {

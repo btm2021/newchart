@@ -6,10 +6,10 @@ export default function manifest(): MetadataRoute.Manifest {
     short_name: "NexaCharts",
     description: "TradingView-style charting workspace for Binance spot and futures.",
     start_url: "/",
-    display: "standalone",
+    display: "fullscreen",
     background_color: "#0b0f17",
     theme_color: "#0b0f17",
-    orientation: "portrait",
+    orientation: "any",
     icons: [
       {
         src: "/icons/icon-192x192.png",

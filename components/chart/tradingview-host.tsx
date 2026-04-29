@@ -34,9 +34,42 @@ type TradingViewHostProps = {
   symbol: string;
   interval: string;
   chartType: "candles" | "bars" | "line";
+  keepScreenAwake: boolean;
+  onToggleKeepScreenAwake?: () => void;
   onReady?: () => void;
   onChartStateChange?: (payload: { symbol: string; interval: string }) => void;
 };
+
+function keepAwakeSvg(active: boolean) {
+  const stroke = active ? "#dbe6ff" : "#b2b5be";
+  return `
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M9 18H7a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v2" stroke="${stroke}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M10 9h4" stroke="${stroke}" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M17.5 13.5v7" stroke="${stroke}" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M14 17h7" stroke="${stroke}" stroke-width="1.8" stroke-linecap="round"/>
+    </svg>
+  `;
+}
+
+function styleKeepAwakeButton(button: HTMLButtonElement, active: boolean) {
+  button.innerHTML = keepAwakeSvg(active);
+  button.title = active ? "Keep screen awake: On" : "Keep screen awake: Off";
+  button.setAttribute("aria-label", button.title);
+  button.setAttribute("aria-pressed", active ? "true" : "false");
+  button.style.cssText = [
+    "display:flex",
+    "align-items:center",
+    "justify-content:center",
+    "width:30px",
+    "height:28px",
+    "padding:0",
+    "border-radius:6px",
+    "transition:background-color 120ms ease,color 120ms ease,border-color 120ms ease",
+    active ? "background:rgba(41, 98, 255, 0.22)" : "background:transparent",
+    active ? "box-shadow:inset 0 0 0 1px rgba(41, 98, 255, 0.42)" : "box-shadow:none",
+  ].join(";");
+}
 
 function loadScript(src: string) {
   return new Promise<void>((resolve, reject) => {
@@ -99,12 +132,14 @@ function updateDocumentTitle(symbol: string, price?: number, direction?: "up" | 
   document.title = `${titleSymbol} ${formatTitlePrice(price)} ${arrow}`;
 }
 
-function TradingViewHostInner({ symbol, interval, chartType, onReady, onChartStateChange }: TradingViewHostProps, ref: React.Ref<TradingViewHostHandle>) {
+function TradingViewHostInner({ symbol, interval, chartType, keepScreenAwake, onToggleKeepScreenAwake, onReady, onChartStateChange }: TradingViewHostProps, ref: React.Ref<TradingViewHostHandle>) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const widgetRef = useRef<ChartingLibraryWidget | null>(null);
+  const keepAwakeButtonRef = useRef<HTMLButtonElement | null>(null);
   const replayControllerRef = useRef<ReplayController | null>(null);
   const onReadyRef = useRef(onReady);
   const onChartStateChangeRef = useRef(onChartStateChange);
+  const onToggleKeepScreenAwakeRef = useRef(onToggleKeepScreenAwake);
   const symbolRef = useRef(symbol);
   const intervalRef = useRef(interval);
   const chartTypeRef = useRef(chartType);
@@ -138,10 +173,11 @@ function TradingViewHostInner({ symbol, interval, chartType, onReady, onChartSta
   useEffect(() => {
     onReadyRef.current = onReady;
     onChartStateChangeRef.current = onChartStateChange;
+    onToggleKeepScreenAwakeRef.current = onToggleKeepScreenAwake;
     symbolRef.current = symbol;
     intervalRef.current = interval;
     chartTypeRef.current = chartType;
-  }, [onReady, onChartStateChange, symbol, interval, chartType]);
+  }, [onReady, onChartStateChange, onToggleKeepScreenAwake, symbol, interval, chartType]);
 
   useEffect(() => {
     titleStateRef.current = {
@@ -288,6 +324,16 @@ function TradingViewHostInner({ symbol, interval, chartType, onReady, onChartSta
           updateDocumentTitle(widget.activeChart().symbol() || symbolRef.current);
           widget.activeChart().setChartType(mapChartType(chartType));
           void replayControllerRef.current?.attachToWidget(widget);
+          void widget.headerReady().then(() => {
+            if (disposed) return;
+            const button = widget.createButton({ align: "right" });
+            button.classList.add("tv-keep-awake-button");
+            button.addEventListener("click", () => {
+              onToggleKeepScreenAwakeRef.current?.();
+            });
+            keepAwakeButtonRef.current = button;
+            styleKeepAwakeButton(button, keepScreenAwake);
+          });
           widget.activeChart().onSymbolChanged().subscribe(null, (nextSymbol) => {
             titleStateRef.current = {
               symbol: widget.activeChart().symbol() || nextSymbol.name,
@@ -322,12 +368,18 @@ function TradingViewHostInner({ symbol, interval, chartType, onReady, onChartSta
     return () => {
       disposed = true;
       delete window.__tvWidget;
+      keepAwakeButtonRef.current = null;
       widgetRef.current?.remove();
       widgetRef.current = null;
       setLoadingState("loading");
       document.title = "Chart";
     };
   }, [datafeed, saveLoadAdapter, chartType, getCustomIndicators]);
+
+  useEffect(() => {
+    if (!keepAwakeButtonRef.current) return;
+    styleKeepAwakeButton(keepAwakeButtonRef.current, keepScreenAwake);
+  }, [keepScreenAwake]);
 
   useEffect(() => {
     if (!widgetRef.current || loadingState !== "ready") return;
